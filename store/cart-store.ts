@@ -1,4 +1,5 @@
 import { createStore } from 'zustand/vanilla'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 type CartItem = {
   id: string
@@ -28,45 +29,53 @@ const defaultInitState: CartState = {
 }
 
 export const createCartStore = (initState: CartState = defaultInitState) => {
-  return createStore<CartStore>()((set, get) => ({
-    ...initState,
-    addItem: (item: CartItem) => {
-      set((state) => {
-        const existing = state.items.find((i) => i.id === item.id)
+  return createStore<CartStore>()(
+    persist(
+      (set, get) => ({
+        ...initState,
+        addItem: (item: CartItem) => {
+          set((state) => {
+            const existing = state.items.find((i) => i.id === item.id)
 
-        if (existing) {
-          return {
-            items: state.items.map((i) =>
-              i.id === item.id ? { ...item, quantity: i.quantity + item.quantity } : i
-            )
-          }
-        } else {
-          return {
-            items: [...state.items, item]
-          }
+            if (existing) {
+              return {
+                items: state.items.map((i) =>
+                  i.id === item.id ? { ...item, quantity: i.quantity + item.quantity } : i
+                )
+              }
+            } else {
+              return {
+                items: [...state.items, item]
+              }
+            }
+          })
+        },
+        removeItem: (id: string) => {
+          set((state) => {
+            return {
+              items: state.items.filter((i) => i.id !== id)
+            }
+          })
+        },
+        getItem: (id: string) => {
+          return get().items.find((item) => item.id === id)
+        },
+        updateQuantity: (id: string, quantity: number) => {
+          set((state) => ({
+            items: state.items.map((i) => (i.id === id ? { ...i, quantity: quantity } : i))
+          }))
+        },
+        clearCart: () => {
+          set(() => ({ items: [] }))
+        },
+        total: () => {
+          return get().items.reduce((sum, item) => sum + item.price * item.quantity, 0)
         }
-      })
-    },
-    removeItem: (id: string) => {
-      set((state) => {
-        return {
-          items: state.items.filter((i) => i.id !== id)
-        }
-      })
-    },
-    getItem: (id: string) => {
-      return get().items.find((item) => item.id === id)
-    },
-    updateQuantity: (id: string, quantity: number) => {
-      set((state) => ({
-        items: state.items.map((i) => (i.id === id ? { ...i, quantity: quantity } : i))
-      }))
-    },
-    clearCart: () => {
-      set(() => ({ items: [] }))
-    },
-    total: () => {
-      return get().items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-    }
-  }))
+      }),
+      {
+        name: 'cart-storage',
+        storage: createJSONStorage(() => localStorage)
+      }
+    )
+  )
 }
