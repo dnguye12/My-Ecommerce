@@ -28,7 +28,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <Card className='overflow-hidden p-0 gap-4'>
         <div className='relative aspect-square'>
           {product.imageUrl ? (
-            <Image src={product.imageUrl} alt={product.name} fill className='object-cover' />
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              fill
+              className='object-cover'
+              loading='eager'
+              sizes='(max-width: 640px) 100vw, 25vw'
+            />
           ) : (
             <Skeleton className='object-cover' />
           )}
