@@ -2,7 +2,7 @@ import { createStore } from 'zustand/vanilla'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { Product } from '@/db/schema/products'
 
-type CartItem = {
+export type CartItem = {
   id: string
   name: string
   price: number

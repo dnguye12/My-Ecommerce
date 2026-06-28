@@ -4,6 +4,7 @@ import { ShoppingCartIcon } from 'lucide-react'
 import { UserButton } from '@clerk/nextjs'
 import { auth } from '@clerk/nextjs/server'
 import CartCounterBadge from './components/CartCounterBadge'
+import CartDrawer from './components/CartDrawer'
 
 const Navbar = async () => {
   const count = 0
@@ -18,12 +19,7 @@ const Navbar = async () => {
           <Link href='/products'>
             <Button variant='ghost'>Products</Button>
           </Link>
-          <Link href='/cart' className='relative'>
-            <Button variant='ghost' size='icon'>
-              <ShoppingCartIcon className='h-5 w-5' />
-            </Button>
-            <CartCounterBadge />
-          </Link>
+          <CartDrawer />
           {userId ? (
             <>
               <Link href='/orders'>
