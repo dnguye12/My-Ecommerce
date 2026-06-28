@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { Button } from '../ui/button'
-import { Badge } from '../ui/badge'
 import { ShoppingCartIcon } from 'lucide-react'
-import { SignInButton, UserButton } from '@clerk/nextjs'
+import { UserButton } from '@clerk/nextjs'
 import { auth } from '@clerk/nextjs/server'
+import CartCounterBadge from './components/CartCounterBadge'
 
 const Navbar = async () => {
   const count = 0
@@ -22,11 +22,7 @@ const Navbar = async () => {
             <Button variant='ghost' size='icon'>
               <ShoppingCartIcon className='h-5 w-5' />
             </Button>
-            {count > 0 && (
-              <Badge className='absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 flex items-center justify-center'>
-                {count}
-              </Badge>
-            )}
+            <CartCounterBadge />
           </Link>
           {userId ? (
             <>

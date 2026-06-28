@@ -41,12 +41,14 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
             if (existing) {
               return {
                 items: state.items.map((i) =>
-                  i.id === item.id ? { ...item, quantity: i.quantity + item.quantity } : i
+                  i.id === item.id
+                    ? { ...item, quantity: i.quantity + Math.max(item.quantity, 1) }
+                    : i
                 )
               }
             } else {
               return {
-                items: [...state.items, item]
+                items: [...state.items, { ...item, quantity: 1 }]
               }
             }
           })
