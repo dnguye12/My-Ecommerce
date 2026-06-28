@@ -1,5 +1,6 @@
 import { createStore } from 'zustand/vanilla'
 import { createJSONStorage, persist } from 'zustand/middleware'
+import { Product } from '@/db/schema/products'
 
 type CartItem = {
   id: string
@@ -78,4 +79,14 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
       }
     )
   )
+}
+
+export const mapProductToCartItem = (product: Product): CartItem => {
+  return {
+    id: product.id,
+    name: product.name,
+    price: parseFloat(product.price),
+    imageUrl: product.imageUrl ?? '',
+    quantity: product.stock
+  }
 }

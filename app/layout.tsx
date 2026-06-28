@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import { ClerkProvider } from '@clerk/nextjs'
 import Navbar from '@/components/navbar/Navbar'
 import { Toaster } from '@/components/ui/sonner'
+import { CartStoreProvider } from '@/providers/cart-store-provider'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -42,9 +43,11 @@ export default function RootLayout({
         )}
       >
         <body className='min-h-screen flex flex-col'>
-          <Navbar />
-          {children}
-          <Toaster richColors />
+          <CartStoreProvider>
+            <Navbar />
+            {children}
+            <Toaster richColors />
+          </CartStoreProvider>
         </body>
       </html>
     </ClerkProvider>

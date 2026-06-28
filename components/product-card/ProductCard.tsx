@@ -7,15 +7,19 @@ import Image from 'next/image'
 import { Skeleton } from '../ui/skeleton'
 import { Button } from '../ui/button'
 import { toast } from 'sonner'
+import { useCartStore } from '@/providers/cart-store-provider'
+import { mapProductToCartItem } from '@/store/cart-store'
 
 interface ProductCardProps {
   product: Product
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const addItem = (e: React.MouseEvent<HTMLButtonElement>, product: Product) => {
+  const addItem = useCartStore((store) => store.addItem)
+
+  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    console.log(product)
+    addItem(mapProductToCartItem(product))
     toast.success('Added to cart')
   }
 
@@ -34,7 +38,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <p className='mt-2 text-lg font-bold'>${product.price}</p>
         </CardContent>
         <CardFooter className='p-4 pt-0'>
-          <Button className='w-full' onClick={(e) => addItem(e, product)}>
+          <Button className='w-full' onClick={handleAddToCart}>
             Add to Cart
           </Button>
         </CardFooter>
