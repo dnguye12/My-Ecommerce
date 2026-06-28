@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Inter } from 'next/font/google'
 import './globals.css'
 import { cn } from '@/lib/utils'
 import { ClerkProvider } from '@clerk/nextjs'
+import Navbar from '@/components/navbar/Navbar'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -27,20 +28,23 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html
-      lang='en'
-      className={cn(
-        'h-full',
-        'antialiased',
-        geistSans.variable,
-        geistMono.variable,
-        'font-sans',
-        inter.variable
-      )}
-    >
-      <body className='min-h-full flex flex-col'>
-        <ClerkProvider>{children}</ClerkProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html
+        lang='en'
+        className={cn(
+          'h-full',
+          'antialiased',
+          geistSans.variable,
+          geistMono.variable,
+          'font-sans',
+          inter.variable
+        )}
+      >
+        <body className='min-h-screen flex flex-col'>
+          <Navbar />
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }
