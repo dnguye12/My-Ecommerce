@@ -9,7 +9,7 @@ type CartItem = {
 }
 
 type CartState = {
-  items: Map<string, CartItem>
+  items: CartItem[]
 }
 
 type CartActions = {
@@ -24,7 +24,7 @@ type CartActions = {
 export type CartStore = CartState & CartActions
 
 const defaultInitState: CartState = {
-  items: new Map()
+  items: []
 }
 
 export const createCartStore = (initState: CartState = defaultInitState) => {
@@ -32,44 +32,41 @@ export const createCartStore = (initState: CartState = defaultInitState) => {
     ...initState,
     addItem: (item: CartItem) => {
       set((state) => {
-        const items = new Map(state.items)
-        const existing = items.get(item.id)
+        const existing = state.items.find((i) => i.id === item.id)
 
-        if (existing == null) {
-          items.set(item.id, item)
+        if (existing) {
+          return {
+            items: state.items.map((i) =>
+              i.id === item.id ? { ...item, quantity: i.quantity + item.quantity } : i
+            )
+          }
+        } else {
+          return {
+            items: [...state.items, item]
+          }
         }
-        return { items }
       })
     },
     removeItem: (id: string) => {
       set((state) => {
-        const items = new Map(state.items)
-        items.delete(id)
-        return { items }
+        return {
+          items: state.items.filter((i) => i.id !== id)
+        }
       })
     },
     getItem: (id: string) => {
-      return get().items.get(id)
+      return get().items.find((item) => item.id === id)
     },
     updateQuantity: (id: string, quantity: number) => {
-      set((state) => {
-        const items = new Map(state.items)
-        const existing = items.get(id)
-
-        if (existing != null) {
-          items.set(id, { ...existing, quantity })
-        }
-
-        return { items }
-      })
+      set((state) => ({
+        items: state.items.map((i) => (i.id === id ? { ...i, quantity: quantity } : i))
+      }))
     },
     clearCart: () => {
-      set(() => ({ items: new Map() }))
+      set(() => ({ items: [] }))
     },
     total: () => {
-      return get()
-        .items.values()
-        .reduce((sum, item) => sum + item.price * item.quantity, 0)
+      return get().items.reduce((sum, item) => sum + item.price * item.quantity, 0)
     }
   }))
 }
