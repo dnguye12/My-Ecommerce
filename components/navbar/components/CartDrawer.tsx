@@ -14,13 +14,23 @@ import { ShoppingCartIcon } from 'lucide-react'
 import { useCartStore } from '@/providers/cart-store-provider'
 import { Separator } from '@/components/ui/separator'
 import CartDrawerProductCard from './CartDrawerProductCard'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 const CartDrawer = () => {
+  const [open, setOpen] = useState(false)
+  const router = useRouter()
+
   const items = useCartStore((store) => store.items)
   const total = useCartStore((store) => store.total())
 
+  const handleCheckOut = () => {
+    setOpen(false)
+    router.push('/cart')
+  }
+
   return (
-    <Drawer direction='right'>
+    <Drawer direction='right' open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant='ghost' size='icon' className='relative'>
           <ShoppingCartIcon />
@@ -43,7 +53,9 @@ const CartDrawer = () => {
             <span>Total</span>
             <span>${total.toFixed(2)}</span>
           </div>
-          <Button size={'lg'}>Checkout</Button>
+          <Button size={'lg'} onClick={handleCheckOut}>
+            Checkout
+          </Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
