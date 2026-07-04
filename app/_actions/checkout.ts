@@ -33,6 +33,12 @@ export async function createCheckoutSession(items: CartItem[]) {
     }))
   )
 
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL
+
+  if (appUrl == null) {
+    throw new Error('NEXT_PUBLIC_APP_URL is not set')
+  }
+
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
     line_items: items.map((item) => ({
