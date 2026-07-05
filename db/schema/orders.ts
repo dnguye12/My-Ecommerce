@@ -13,7 +13,7 @@ export const OrderStatusEnum = pgEnum('order_status', [
 
 export const orders = pgTable('orders', {
   id: uuid('id').defaultRandom().primaryKey(),
-  stripeSessionId: text(''),
+  stripeSessionId: text('stripe_session_id'),
   userId: text('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
