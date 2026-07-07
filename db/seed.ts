@@ -6,12 +6,14 @@ import { books } from './schema/product_books'
 import { categories } from './schema/categories'
 import { productCategories } from './schema/product_categories'
 import { eq } from 'drizzle-orm'
+import { collections, productCollections } from './schema'
 
 const generateFakeBookProduct = () => {
   return {
     name: faker.book.title(),
     price: faker.commerce.price({ min: 5, max: 200 }),
-    imageUrl: faker.image.url()
+    imageUrl: faker.image.url(),
+    salesCount: faker.number.int({ min: 0, max: 150 })
   }
 }
 
@@ -27,11 +29,26 @@ const generateFakeBook = () => {
 const resetDatabase = async () => {
   await db.delete(products)
   await db.delete(categories).where(eq(categories.name, 'Book'))
+  await db.delete(collections)
 }
 
 const seedBook = async () => {
   await resetDatabase()
   console.log('Seeding...')
+
+  const insertedCollections = await db
+    .insert(collections)
+    .values([
+      {
+        name: 'Staff Picks',
+        slug: 'staff-picks'
+      },
+      {
+        name: 'Summer Reading',
+        slug: 'summer-reading'
+      }
+    ])
+    .returning()
 
   const insertedCategory = (
     await db
@@ -70,6 +87,21 @@ const seedBook = async () => {
       productId: insertedProducts[idx].id
     }))
   )
+
+  const collectionProducts = insertedCollections.flatMap((collection) => {
+    const randomProducts = faker.helpers.arrayElements(insertedProducts, {
+      min: 6,
+      max: 8
+    })
+
+    return randomProducts.map((product, idx) => ({
+      productId: product.id,
+      collectionId: collection.id,
+      position: idx
+    }))
+  })
+
+  await db.insert(productCollections).values(collectionProducts)
 
   console.log('Finished seeding')
 }

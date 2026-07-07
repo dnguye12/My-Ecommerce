@@ -9,7 +9,7 @@ export const productCollections = pgTable(
     productId: uuid('product_id')
       .notNull()
       .references(() => products.id, { onDelete: 'cascade' }),
-    collectionId: uuid('collection_id')
+    collectionId: integer('collection_id')
       .notNull()
       .references(() => collections.id, { onDelete: 'cascade' }),
     position: integer('position').notNull().default(0)
