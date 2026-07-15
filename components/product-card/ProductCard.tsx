@@ -25,7 +25,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <Link href={`/products/${product.id}`}>
-      <Card className='overflow-hidden p-0 gap-4'>
+      <Card className='overflow-hidden p-0 gap-4 drop-shadow'>
         <div className='relative aspect-square'>
           {product.imageUrl ? (
             <Image

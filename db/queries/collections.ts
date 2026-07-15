@@ -9,7 +9,7 @@ export const getCollections = () => {
 }
 
 export const getCollectionBySlug = (slug: string) => {
-  db.query.collections.findFirst({
+  return db.query.collections.findFirst({
     where: eq(collections.slug, slug),
     with: {
       productCollections: {
