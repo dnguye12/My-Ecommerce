@@ -40,11 +40,15 @@ export const getExchangeRates = async (
   }
 }
 
-export const formatMoney = (amount: number, currency: SUPPORTED_CURRENCIES): string => {
+export const formatMoney = (
+  amount: string,
+  currency: SUPPORTED_CURRENCIES,
+  exchangeRate: number = 1
+): string => {
   return Intl.NumberFormat('en', {
     style: 'currency',
     currency
-  }).format(amount)
+  }).format(Number(amount) * exchangeRate)
 }
 
 export const getCurrencySymbol = (currency: SUPPORTED_CURRENCIES) => {

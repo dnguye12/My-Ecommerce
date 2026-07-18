@@ -3,6 +3,7 @@
 import { deleteProduct } from '@/app/_actions/products'
 import { Button } from '@/components/ui/button'
 import { Product } from '@/db/schema'
+import { formatMoney, SUPPORTED_CURRENCIES } from '@/lib/currency'
 import { Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import { toast } from 'sonner'
@@ -28,7 +29,7 @@ const AdminProductList = ({ products }: AdminProductListProps) => {
           <div className='flex-1'>
             <p className='font-medium'>{product.name}</p>
             <p className='text-sm text-muted-foreground'>
-              ${product.price} · {product.stock} in stock
+              {formatMoney(product.price, SUPPORTED_CURRENCIES.USD)} · {product.stock} in stock
             </p>
           </div>
           <Button

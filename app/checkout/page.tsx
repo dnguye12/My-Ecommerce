@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import { useUser } from '@clerk/nextjs'
 import Link from 'next/link'
 import { useStoreCurrency } from '@/providers/store-currency-provider'
+import { formatMoney } from '@/lib/currency'
 
 const CheckoutPage = () => {
   const [loadingStripe, setLoadingStripe] = useState(false)
@@ -45,12 +46,15 @@ const CheckoutPage = () => {
             <span>
               {item.name} x {item.quantity}
             </span>
-            <span>${(item.price * item.quantity).toFixed(2)}</span>
+            <span>
+              {formatMoney((item.price * item.quantity).toString(), currency, exchangeRate)}
+            </span>
           </div>
         ))}
         <Separator className='my-4' />
         <div className='flex justify-between font-bold'>
-          <span>Total</span> <span>${total().toFixed(2)}</span>
+          <span>Total</span>
+          <span>{formatMoney(total().toString(), currency, exchangeRate)}</span>
         </div>
         {isSignedIn ? (
           <Button

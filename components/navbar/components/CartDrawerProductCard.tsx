@@ -1,3 +1,7 @@
+'use client'
+
+import { formatMoney } from '@/lib/currency'
+import { useStoreCurrency } from '@/providers/store-currency-provider'
 import { CartItem } from '@/store/cart-store'
 import Image from 'next/image'
 
@@ -6,6 +10,8 @@ interface CartDrawerProductCardProps {
 }
 
 const CartDrawerProductCard = ({ item }: CartDrawerProductCardProps) => {
+  const { currency, exchangeRate } = useStoreCurrency()
+
   return (
     <div className='flex items-center gap-4 rounded-lg border p-4'>
       <div className='overflow-hidden rounded-md aspect-square w-20 relative'>
@@ -16,7 +22,9 @@ const CartDrawerProductCard = ({ item }: CartDrawerProductCardProps) => {
         <p className='text-sm text-muted-foreground'>Qty: {item.quantity}</p>
       </div>
       <div className='text-right'>
-        <p className='font-semibold'>${item.price.toFixed(2)}</p>
+        <p className='font-semibold'>
+          {formatMoney(item.price.toFixed(2), currency, exchangeRate)}
+        </p>
       </div>
     </div>
   )
