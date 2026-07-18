@@ -12,7 +12,8 @@ export const orderItems = pgTable('order_items', {
     .notNull()
     .references(() => products.id, { onDelete: 'cascade' }),
   quantity: integer('quantity').notNull(),
-  price: decimal('price', { precision: 10, scale: 2 }).notNull()
+  price: decimal('price', { precision: 10, scale: 2 }).notNull(),
+  priceCharged: decimal('price_charged', { precision: 10, scale: 2 })
 })
 
 export type OrderItem = typeof orderItems.$inferSelect
