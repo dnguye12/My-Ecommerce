@@ -44,7 +44,9 @@ const CartPage = () => {
                   </Button>
                 </div>
               </div>
-              <div className='font-bold'> ${(item.price * item.quantity).toFixed(2)} </div>
+              <div className='font-bold'>
+                {formatMoney((item.price * item.quantity).toFixed(2), currency, exchangeRate)}
+              </div>
             </div>
           ))}
         </div>
