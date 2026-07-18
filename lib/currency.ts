@@ -46,3 +46,13 @@ export const formatMoney = (amount: number, currency: SUPPORTED_CURRENCIES): str
     currency
   }).format(amount)
 }
+
+export const getCurrencySymbol = (currency: SUPPORTED_CURRENCIES) => {
+  const parts = new Intl.NumberFormat('en', {
+    style: 'currency',
+    currency,
+    currencyDisplay: 'narrowSymbol'
+  }).formatToParts(0)
+
+  return parts.find((part) => part.type === 'currency')?.value ?? currency
+}

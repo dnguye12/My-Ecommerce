@@ -1,10 +1,9 @@
 import Link from 'next/link'
 import { Button } from '../ui/button'
-import { ShoppingCartIcon } from 'lucide-react'
 import { UserButton } from '@clerk/nextjs'
 import { auth } from '@clerk/nextjs/server'
-import CartCounterBadge from './components/CartCounterBadge'
 import CartDrawer from './components/CartDrawer'
+import CurrencySelector from './components/CurrencySelector'
 
 const Navbar = async () => {
   const count = 0
@@ -34,6 +33,7 @@ const Navbar = async () => {
               </Link>
             </>
           )}
+          <CurrencySelector />
         </nav>
       </div>
     </header>
