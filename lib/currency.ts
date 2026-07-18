@@ -37,3 +37,10 @@ export const getExchangeRates = async (
     return FALLBACK_RATES
   }
 }
+
+export const formatMoney = (amount: number, currency: SUPPORTED_CURRENCIES): string => {
+  return Intl.NumberFormat('en', {
+    style: 'currency',
+    currency
+  }).format(amount)
+}
