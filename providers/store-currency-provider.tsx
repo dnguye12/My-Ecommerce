@@ -1,17 +1,8 @@
 'use client'
 
-import { isSupportedCurrency, SUPPORTED_CURRENCIES } from '@/lib/currency'
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState
-} from 'react'
-
-const STORE_CURRENCY_LOCALSTORAGE_KEY = 'store-currency'
+import { STORE_CURRENCY_COOKIE_KEY, SUPPORTED_CURRENCIES } from '@/lib/currency'
+import { useRouter } from 'next/navigation'
+import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react'
 
 type StoreCurrencyValue = {
   currency: SUPPORTED_CURRENCIES
@@ -24,24 +15,25 @@ const StoreCurrencyContext = createContext<StoreCurrencyValue | undefined>(undef
 interface StoreCurrencyProvider {
   children: ReactNode
   exchangeRates: any
+  initialCurrency: SUPPORTED_CURRENCIES
 }
 
-export const StoreCurrencyProvider = ({ children, exchangeRates }: StoreCurrencyProvider) => {
-  const [currency, setCurrency] = useState<SUPPORTED_CURRENCIES>(SUPPORTED_CURRENCIES.USD)
+export const StoreCurrencyProvider = ({
+  children,
+  exchangeRates,
+  initialCurrency
+}: StoreCurrencyProvider) => {
+  const [currency, setCurrency] = useState<SUPPORTED_CURRENCIES>(initialCurrency)
+  const router = useRouter()
 
-  useEffect(() => {
-    const savedCurrency = localStorage.getItem(STORE_CURRENCY_LOCALSTORAGE_KEY)
-
-    if (savedCurrency != null && isSupportedCurrency(savedCurrency)) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setCurrency(savedCurrency as SUPPORTED_CURRENCIES)
-    }
-  }, [])
-
-  const handleChangeCurrency = useCallback((currency: SUPPORTED_CURRENCIES) => {
-    setCurrency(currency)
-    localStorage.setItem(STORE_CURRENCY_LOCALSTORAGE_KEY, currency)
-  }, [])
+  const handleChangeCurrency = useCallback(
+    (currency: SUPPORTED_CURRENCIES) => {
+      setCurrency(currency)
+      document.cookie = `${STORE_CURRENCY_COOKIE_KEY}=${currency}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`
+      router.refresh()
+    },
+    [router]
+  )
 
   const value: StoreCurrencyValue = useMemo(() => {
     const exchangeRate = exchangeRates.conversion_rates[currency]

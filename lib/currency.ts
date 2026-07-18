@@ -1,3 +1,5 @@
+export const STORE_CURRENCY_COOKIE_KEY = 'store-currency'
+
 export enum SUPPORTED_CURRENCIES {
   USD = 'USD',
   EUR = 'EUR',

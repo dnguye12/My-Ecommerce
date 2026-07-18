@@ -9,6 +9,7 @@ import { CartStoreProvider } from '@/providers/cart-store-provider'
 import { syncUser } from '@/db/utils/sync-user'
 import { StoreCurrencyProvider } from '@/providers/store-currency-provider'
 import { getExchangeRates } from '@/lib/currency'
+import { getStoreCurrency } from '@/lib/currency.server'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -34,6 +35,7 @@ export default async function RootLayout({
 }>) {
   await syncUser()
   const exchangeRates = await getExchangeRates()
+  const { currency: initialCurrency } = await getStoreCurrency()
   return (
     <ClerkProvider>
       <html
@@ -48,7 +50,7 @@ export default async function RootLayout({
         )}
       >
         <body className='min-h-screen flex flex-col'>
-          <StoreCurrencyProvider exchangeRates={exchangeRates}>
+          <StoreCurrencyProvider exchangeRates={exchangeRates} initialCurrency={initialCurrency}>
             <CartStoreProvider>
               <Navbar />
               {children}
