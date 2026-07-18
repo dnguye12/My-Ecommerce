@@ -7,6 +7,8 @@ import Navbar from '@/components/navbar/Navbar'
 import { Toaster } from '@/components/ui/sonner'
 import { CartStoreProvider } from '@/providers/cart-store-provider'
 import { syncUser } from '@/db/utils/sync-user'
+import { StoreCurrencyProvider } from '@/providers/store-currency-provider'
+import { getExchangeRates } from '@/lib/currency'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -31,6 +33,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   await syncUser()
+  const exchangeRates = await getExchangeRates()
   return (
     <ClerkProvider>
       <html
@@ -45,11 +48,13 @@ export default async function RootLayout({
         )}
       >
         <body className='min-h-screen flex flex-col'>
-          <CartStoreProvider>
-            <Navbar />
-            {children}
-            <Toaster richColors />
-          </CartStoreProvider>
+          <StoreCurrencyProvider exchangeRates={exchangeRates}>
+            <CartStoreProvider>
+              <Navbar />
+              {children}
+              <Toaster richColors />
+            </CartStoreProvider>
+          </StoreCurrencyProvider>
         </body>
       </html>
     </ClerkProvider>

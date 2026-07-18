@@ -1,9 +1,11 @@
-import 'server-only'
-
-enum SUPPORTED_CURRENCIES {
+export enum SUPPORTED_CURRENCIES {
   USD = 'USD',
   EUR = 'EUR',
   GBP = 'GBP'
+}
+
+export const isSupportedCurrency = (value: string) => {
+  return Object.values(SUPPORTED_CURRENCIES).includes(value as SUPPORTED_CURRENCIES)
 }
 
 const EXCHANGE_RATE_URL = 'https://v6.exchangerate-api.com/v6/'
