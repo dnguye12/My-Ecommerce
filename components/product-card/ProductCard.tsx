@@ -9,6 +9,8 @@ import { Button } from '../ui/button'
 import { toast } from 'sonner'
 import { useCartStore } from '@/providers/cart-store-provider'
 import { mapProductToCartItem } from '@/store/cart-store'
+import { useStoreCurrency } from '@/providers/store-currency-provider'
+import { formatMoney } from '@/lib/currency'
 
 interface ProductCardProps {
   product: Product
@@ -16,6 +18,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const addItem = useCartStore((store) => store.addItem)
+  const { currency, exchangeRate } = useStoreCurrency()
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -42,7 +45,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
         <CardContent className='px-4 py-0'>
           <h3 className='font-semibold hover:underline'>{product.name}</h3>
-          <p className='mt-2 text-lg font-bold'>${product.price}</p>
+          <p className='mt-2 text-lg font-bold'>
+            {formatMoney(product.price, currency, exchangeRate)}
+          </p>
         </CardContent>
         <CardFooter className='p-4 pt-0'>
           <Button className='w-full' onClick={handleAddToCart}>

@@ -16,13 +16,16 @@ import { Separator } from '@/components/ui/separator'
 import CartDrawerProductCard from './CartDrawerProductCard'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { formatMoney } from '@/lib/currency'
+import { useStoreCurrency } from '@/providers/store-currency-provider'
 
 const CartDrawer = () => {
   const [open, setOpen] = useState(false)
   const router = useRouter()
 
   const items = useCartStore((store) => store.items)
-  const total = useCartStore((store) => store.total())
+  const total = useCartStore((state) => state.total)
+  const { currency, exchangeRate } = useStoreCurrency()
 
   const handleCheckOut = () => {
     setOpen(false)
@@ -51,7 +54,7 @@ const CartDrawer = () => {
         <DrawerFooter>
           <div className='flex justify-between text-lg font-semibold'>
             <span>Total</span>
-            <span>${total.toFixed(2)}</span>
+            <span>{formatMoney(total().toString(), currency, exchangeRate)}</span>
           </div>
           <Button size={'lg'} onClick={handleCheckOut}>
             Checkout

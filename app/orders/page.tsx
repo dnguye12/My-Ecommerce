@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge'
 import { getUserOrders } from '@/db/queries/orders'
 import { auth } from '@clerk/nextjs/server'
 import ClearCartOnSuccess from './_components/ClearCartOnSuccess'
+import { getCurrencySymbol, SUPPORTED_CURRENCIES } from '@/lib/currency'
 
 const OrderPage = async () => {
   const { userId } = await auth()
@@ -31,7 +32,10 @@ const OrderPage = async () => {
                       <span>
                         {item.product.name} x {item.quantity}
                       </span>
-                      <span>${item.price}</span>
+                      <span>
+                        {getCurrencySymbol(order.currency as SUPPORTED_CURRENCIES)}
+                        {item.priceCharged}
+                      </span>
                     </div>
                   ))}
                 </div>

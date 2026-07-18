@@ -8,6 +8,8 @@ import { createCheckoutSession } from '../_actions/checkout'
 import { toast } from 'sonner'
 import { useUser } from '@clerk/nextjs'
 import Link from 'next/link'
+import { useStoreCurrency } from '@/providers/store-currency-provider'
+import { formatMoney } from '@/lib/currency'
 
 const CheckoutPage = () => {
   const [loadingStripe, setLoadingStripe] = useState(false)
@@ -15,12 +17,13 @@ const CheckoutPage = () => {
   const { isSignedIn, isLoaded } = useUser()
   const items = useCartStore((state) => state.items)
   const total = useCartStore((state) => state.total)
+  const { currency, exchangeRate } = useStoreCurrency()
 
   const handleCheckout = async () => {
     setLoadingStripe(true)
 
     try {
-      const { url } = await createCheckoutSession(items)
+      const { url } = await createCheckoutSession(items, currency, exchangeRate)
       if (url) {
         window.location.href = url
       }
@@ -43,12 +46,15 @@ const CheckoutPage = () => {
             <span>
               {item.name} x {item.quantity}
             </span>
-            <span>${(item.price * item.quantity).toFixed(2)}</span>
+            <span>
+              {formatMoney((item.price * item.quantity).toString(), currency, exchangeRate)}
+            </span>
           </div>
         ))}
         <Separator className='my-4' />
         <div className='flex justify-between font-bold'>
-          <span>Total</span> <span>${total().toFixed(2)}</span>
+          <span>Total</span>
+          <span>{formatMoney(total().toString(), currency, exchangeRate)}</span>
         </div>
         {isSignedIn ? (
           <Button

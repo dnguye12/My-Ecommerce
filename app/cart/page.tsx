@@ -3,7 +3,9 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
+import { formatMoney } from '@/lib/currency'
 import { useCartStore } from '@/providers/cart-store-provider'
+import { useStoreCurrency } from '@/providers/store-currency-provider'
 import { Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -13,6 +15,8 @@ const CartPage = () => {
   const total = useCartStore((state) => state.total)
   const updateQuantity = useCartStore((state) => state.updateQuantity)
   const removeItem = useCartStore((state) => state.removeItem)
+
+  const { currency, exchangeRate } = useStoreCurrency()
 
   return (
     <main className='container mx-auto px-4 py-8'>
@@ -40,14 +44,17 @@ const CartPage = () => {
                   </Button>
                 </div>
               </div>
-              <div className='font-bold'> ${(item.price * item.quantity).toFixed(2)} </div>
+              <div className='font-bold'>
+                {formatMoney((item.price * item.quantity).toFixed(2), currency, exchangeRate)}
+              </div>
             </div>
           ))}
         </div>
         <div className='h-fit rounded-lg border p-6'>
           <h2 className='text-xl font-bold'>Order Summary</h2> <Separator className='my-4' />
           <div className='flex justify-between'>
-            <span>Subtotal</span> <span>${total().toFixed(2)}</span>
+            <span>Subtotal</span>
+            <span>{formatMoney(total().toString(), currency, exchangeRate)}</span>
           </div>
           <Separator className='my-4' />
           <Link href='/checkout'>

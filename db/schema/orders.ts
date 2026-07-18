@@ -18,7 +18,10 @@ export const orders = pgTable('orders', {
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   total: decimal('total', { precision: 10, scale: 2 }).notNull(),
+  totalCharged: decimal('total_charged', { precision: 10, scale: 2 }),
   status: OrderStatusEnum('status').default('pending').notNull(),
+  currency: text('currency').notNull().default('USD'),
+  exchangeRate: decimal('exchange_rate', { precision: 10, scale: 2 }).notNull().default('1'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull()
 })
