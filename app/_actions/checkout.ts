@@ -2,12 +2,17 @@
 
 import { db } from '@/db'
 import { orderItems, orders } from '@/db/schema'
+import { SUPPORTED_CURRENCIES } from '@/lib/currency'
 import { stripe } from '@/lib/stripe'
 import { CartItem } from '@/store/cart-store'
 import { auth } from '@clerk/nextjs/server'
 import { eq } from 'drizzle-orm'
 
-export async function createCheckoutSession(items: CartItem[]) {
+export async function createCheckoutSession(
+  items: CartItem[],
+  currency: SUPPORTED_CURRENCIES = SUPPORTED_CURRENCIES.USD,
+  exchangeRate: number = 1
+) {
   const { userId } = await auth()
 
   if (!userId) {
@@ -20,7 +25,9 @@ export async function createCheckoutSession(items: CartItem[]) {
     .insert(orders)
     .values({
       userId,
-      total: total.toFixed(2)
+      total: total.toFixed(2),
+      currency: currency,
+      exchangeRate: exchangeRate.toFixed(2)
     })
     .returning()
 
@@ -29,7 +36,8 @@ export async function createCheckoutSession(items: CartItem[]) {
       orderId: order.id,
       productId: item.id,
       quantity: item.quantity,
-      price: item.price.toFixed(2)
+      price: item.price.toFixed(2),
+      priceCharged: (item.price * item.quantity * exchangeRate).toFixed(2)
     }))
   )
 
@@ -43,9 +51,9 @@ export async function createCheckoutSession(items: CartItem[]) {
     mode: 'payment',
     line_items: items.map((item) => ({
       price_data: {
-        currency: 'usd',
+        currency: currency ?? 'usd',
         product_data: { name: item.name, images: [item.imageUrl] },
-        unit_amount: Math.round(item.price * 100)
+        unit_amount: Math.round(item.price * exchangeRate * 100)
       },
       quantity: item.quantity
     })),

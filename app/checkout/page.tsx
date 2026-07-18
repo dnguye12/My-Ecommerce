@@ -8,6 +8,7 @@ import { createCheckoutSession } from '../_actions/checkout'
 import { toast } from 'sonner'
 import { useUser } from '@clerk/nextjs'
 import Link from 'next/link'
+import { useStoreCurrency } from '@/providers/store-currency-provider'
 
 const CheckoutPage = () => {
   const [loadingStripe, setLoadingStripe] = useState(false)
@@ -15,12 +16,13 @@ const CheckoutPage = () => {
   const { isSignedIn, isLoaded } = useUser()
   const items = useCartStore((state) => state.items)
   const total = useCartStore((state) => state.total)
+  const { currency, exchangeRate } = useStoreCurrency()
 
   const handleCheckout = async () => {
     setLoadingStripe(true)
 
     try {
-      const { url } = await createCheckoutSession(items)
+      const { url } = await createCheckoutSession(items, currency, exchangeRate)
       if (url) {
         window.location.href = url
       }
