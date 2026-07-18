@@ -1,11 +1,14 @@
 import AddToCartButton from '@/components/add-to-cart-button/AddToCartButton'
 import { getProductById } from '@/db/queries/products'
+import { formatMoney } from '@/lib/currency'
+import { getStoreCurrency } from '@/lib/currency.server'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
 const ProductPage = async ({ params }: { params: Promise<{ productId: string }> }) => {
   const { productId } = await params
   const product = await getProductById(productId)
+  const { currency, exchangeRate } = await getStoreCurrency()
 
   if (product == null) {
     notFound()
@@ -24,7 +27,9 @@ const ProductPage = async ({ params }: { params: Promise<{ productId: string }> 
         </div>
         <div>
           <h1 className='mt-2 text-3xl font-bold'>{product.name}</h1>
-          <p className='mt-4 text-2xl font-bold'>${product.price}</p>
+          <p className='mt-4 text-2xl font-bold'>
+            {formatMoney(product.price, currency, exchangeRate)}
+          </p>
           <p className='mt-2 text-sm'>
             {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
           </p>
