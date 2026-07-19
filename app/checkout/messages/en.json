@@ -1,0 +1,9 @@
+{
+  "loading": "Loading...",
+  "title": "Checkout",
+  "total": "Total",
+  "processing": "Processing...",
+  "pay": "Pay with Stripe",
+  "sign-in-to-pay": "Sign in to pay",
+  "failed": "Checkout failed"
+}

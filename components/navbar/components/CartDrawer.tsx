@@ -18,10 +18,12 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { formatMoney } from '@/lib/currency'
 import { useStoreCurrency } from '@/providers/store-currency-provider'
+import { useTranslations } from 'next-intl'
 
 const CartDrawer = () => {
   const [open, setOpen] = useState(false)
   const router = useRouter()
+  const t = useTranslations('CartDrawer')
 
   const items = useCartStore((store) => store.items)
   const total = useCartStore((state) => state.total)
@@ -42,7 +44,7 @@ const CartDrawer = () => {
       </DrawerTrigger>
       <DrawerContent className=' max-w-2xl'>
         <DrawerHeader>
-          <DrawerTitle className='text-2xl font-semibold'>Shopping Cart</DrawerTitle>
+          <DrawerTitle className='text-2xl font-semibold'>{t('title')}</DrawerTitle>
         </DrawerHeader>
         <Separator />
         <div className='flex-1 flex flex-col gap-4 p-4'>
@@ -53,11 +55,11 @@ const CartDrawer = () => {
         <Separator />
         <DrawerFooter>
           <div className='flex justify-between text-lg font-semibold'>
-            <span>Total</span>
+            <span>{t('total')}</span>
             <span>{formatMoney(total().toString(), currency, exchangeRate)}</span>
           </div>
           <Button size={'lg'} onClick={handleCheckOut}>
-            Checkout
+            {t('checkout')}
           </Button>
         </DrawerFooter>
       </DrawerContent>

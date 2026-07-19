@@ -11,6 +11,7 @@ import { useCartStore } from '@/providers/cart-store-provider'
 import { mapProductToCartItem } from '@/store/cart-store'
 import { useStoreCurrency } from '@/providers/store-currency-provider'
 import { formatMoney } from '@/lib/currency'
+import { useTranslations } from 'next-intl'
 
 interface ProductCardProps {
   product: Product
@@ -19,11 +20,12 @@ interface ProductCardProps {
 const ProductCard = ({ product }: ProductCardProps) => {
   const addItem = useCartStore((store) => store.addItem)
   const { currency, exchangeRate } = useStoreCurrency()
+  const t = useTranslations('ProductCard')
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     addItem(mapProductToCartItem(product))
-    toast.success('Added to cart')
+    toast.success(t('added'))
   }
 
   return (
@@ -51,7 +53,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </CardContent>
         <CardFooter className='p-4 pt-0'>
           <Button className='w-full' onClick={handleAddToCart}>
-            Add to Cart
+            {t('add-to-cart')}
           </Button>
         </CardFooter>
       </Card>

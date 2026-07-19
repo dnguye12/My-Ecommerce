@@ -10,6 +10,7 @@ import { useUser } from '@clerk/nextjs'
 import Link from 'next/link'
 import { useStoreCurrency } from '@/providers/store-currency-provider'
 import { formatMoney } from '@/lib/currency'
+import { useTranslations } from 'next-intl'
 
 const CheckoutPage = () => {
   const [loadingStripe, setLoadingStripe] = useState(false)
@@ -18,6 +19,7 @@ const CheckoutPage = () => {
   const items = useCartStore((state) => state.items)
   const total = useCartStore((state) => state.total)
   const { currency, exchangeRate } = useStoreCurrency()
+  const t = useTranslations('CheckoutPage')
 
   const handleCheckout = async () => {
     setLoadingStripe(true)
@@ -28,18 +30,18 @@ const CheckoutPage = () => {
         window.location.href = url
       }
     } catch {
-      toast.error('Checkout failed')
+      toast.error(t('failed'))
       setLoadingStripe(false)
     }
   }
 
   if (!isLoaded) {
-    return <div>Loading...</div>
+    return <div>{t('loading')}</div>
   }
 
   return (
     <main className='container mx-auto max-w-2xl px-4 py-8'>
-      <h1 className='mb-8 text-3xl font-bold'>Checkout</h1>
+      <h1 className='mb-8 text-3xl font-bold'>{t('title')}</h1>
       <div className='rounded-lg border p-6'>
         {items.map((item) => (
           <div key={item.id} className='flex justify-between py-2'>
@@ -53,7 +55,7 @@ const CheckoutPage = () => {
         ))}
         <Separator className='my-4' />
         <div className='flex justify-between font-bold'>
-          <span>Total</span>
+          <span>{t('total')}</span>
           <span>{formatMoney(total().toString(), currency, exchangeRate)}</span>
         </div>
         {isSignedIn ? (
@@ -63,11 +65,11 @@ const CheckoutPage = () => {
             onClick={handleCheckout}
             disabled={loadingStripe || items.length === 0}
           >
-            {loadingStripe ? 'Processing...' : 'Pay with Stripe'}
+            {loadingStripe ? t('processing') : t('pay')}
           </Button>
         ) : (
           <Button className='mt-6 w-full' size='lg' asChild>
-            <Link href={'/sign-in?redirect_url=/checkout'}>Sign in to pay</Link>
+            <Link href={'/sign-in?redirect_url=/checkout'}>{t('sign-in-to-pay')}</Link>
           </Button>
         )}
       </div>
