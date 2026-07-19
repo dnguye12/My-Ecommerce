@@ -10,6 +10,7 @@ import { syncUser } from '@/db/utils/sync-user'
 import { StoreCurrencyProvider } from '@/providers/store-currency-provider'
 import { getExchangeRates } from '@/lib/currency'
 import { getStoreCurrency } from '@/lib/currency.server'
+import { NextIntlClientProvider } from 'next-intl'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -50,13 +51,15 @@ export default async function RootLayout({
         )}
       >
         <body className='min-h-screen flex flex-col'>
-          <StoreCurrencyProvider exchangeRates={exchangeRates} initialCurrency={initialCurrency}>
-            <CartStoreProvider>
-              <Navbar />
-              {children}
-              <Toaster richColors />
-            </CartStoreProvider>
-          </StoreCurrencyProvider>
+          <NextIntlClientProvider>
+            <StoreCurrencyProvider exchangeRates={exchangeRates} initialCurrency={initialCurrency}>
+              <CartStoreProvider>
+                <Navbar />
+                {children}
+                <Toaster richColors />
+              </CartStoreProvider>
+            </StoreCurrencyProvider>
+          </NextIntlClientProvider>
         </body>
       </html>
     </ClerkProvider>
