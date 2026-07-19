@@ -5,6 +5,7 @@ import { Button } from '../ui/button'
 import { Product } from '@/db/schema/products'
 import { mapProductToCartItem } from '@/store/cart-store'
 import { toast } from 'sonner'
+import { useTranslations } from 'next-intl'
 
 interface AddToCartButtonProps {
   product: Product
@@ -12,14 +13,15 @@ interface AddToCartButtonProps {
 
 const AddToCartButton = ({ product }: AddToCartButtonProps) => {
   const addItem = useCartStore((state) => state.addItem)
+  const t = useTranslations('AddToCartButton')
 
   const handleAddItem = () => {
     addItem(mapProductToCartItem(product))
-    toast.success('Added to cart')
+    toast.success(t('added'))
   }
   return (
     <Button size={'lg'} onClick={handleAddItem}>
-      Add to Cart
+      {t('add-to-cart')}
     </Button>
   )
 }

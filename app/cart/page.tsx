@@ -9,6 +9,7 @@ import { useStoreCurrency } from '@/providers/store-currency-provider'
 import { Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 const CartPage = () => {
   const items = useCartStore((state) => state.items)
@@ -17,10 +18,11 @@ const CartPage = () => {
   const removeItem = useCartStore((state) => state.removeItem)
 
   const { currency, exchangeRate } = useStoreCurrency()
+  const t = useTranslations('CartPage')
 
   return (
     <main className='container mx-auto px-4 py-8'>
-      <h1 className='mb-8 text-3xl font-bold'>Shopping Cart</h1>
+      <h1 className='mb-8 text-3xl font-bold'>{t('title')}</h1>
       <div className='grid gap-8 lg:grid-cols-3'>
         <div className='space-y-4 lg:col-span-2'>
           {items.map((item) => (
@@ -51,15 +53,15 @@ const CartPage = () => {
           ))}
         </div>
         <div className='h-fit rounded-lg border p-6'>
-          <h2 className='text-xl font-bold'>Order Summary</h2> <Separator className='my-4' />
+          <h2 className='text-xl font-bold'>{t('order-summary')}</h2> <Separator className='my-4' />
           <div className='flex justify-between'>
-            <span>Subtotal</span>
+            <span>{t('subtotal')}</span>
             <span>{formatMoney(total().toString(), currency, exchangeRate)}</span>
           </div>
           <Separator className='my-4' />
           <Link href='/checkout'>
             <Button className='w-full' size='lg'>
-              Checkout
+              {t('checkout')}
             </Button>
           </Link>
         </div>

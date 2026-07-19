@@ -4,6 +4,7 @@ import { formatMoney } from '@/lib/currency'
 import { useStoreCurrency } from '@/providers/store-currency-provider'
 import { CartItem } from '@/store/cart-store'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 
 interface CartDrawerProductCardProps {
   item: CartItem
@@ -11,6 +12,7 @@ interface CartDrawerProductCardProps {
 
 const CartDrawerProductCard = ({ item }: CartDrawerProductCardProps) => {
   const { currency, exchangeRate } = useStoreCurrency()
+  const t = useTranslations('CartDrawer')
 
   return (
     <div className='flex items-center gap-4 rounded-lg border p-4'>
@@ -19,7 +21,9 @@ const CartDrawerProductCard = ({ item }: CartDrawerProductCardProps) => {
       </div>
       <div className='flex-1'>
         <h3 className='font-medium'>{item.name}</h3>
-        <p className='text-sm text-muted-foreground'>Qty: {item.quantity}</p>
+        <p className='text-sm text-muted-foreground'>
+          {t('qty')}: {item.quantity}
+        </p>
       </div>
       <div className='text-right'>
         <p className='font-semibold'>

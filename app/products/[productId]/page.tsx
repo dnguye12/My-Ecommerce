@@ -4,11 +4,13 @@ import { formatMoney } from '@/lib/currency'
 import { getStoreCurrency } from '@/lib/currency.server'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 const ProductPage = async ({ params }: { params: Promise<{ productId: string }> }) => {
   const { productId } = await params
   const product = await getProductById(productId)
   const { currency, exchangeRate } = await getStoreCurrency()
+  const t = await getTranslations('ProductPage')
 
   if (product == null) {
     notFound()
@@ -31,7 +33,7 @@ const ProductPage = async ({ params }: { params: Promise<{ productId: string }> 
             {formatMoney(product.price, currency, exchangeRate)}
           </p>
           <p className='mt-2 text-sm'>
-            {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+            {product.stock > 0 ? t('in-stock', { count: product.stock }) : t('out-of-stock')}
           </p>
           {product.type === 'book' && product.book && (
             <div>

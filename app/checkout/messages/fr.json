@@ -1,0 +1,9 @@
+{
+  "loading": "Chargement...",
+  "title": "Commander",
+  "total": "Total",
+  "processing": "Traitement...",
+  "pay": "Payer avec Stripe",
+  "sign-in-to-pay": "Connectez-vous pour payer",
+  "failed": "Échec du paiement"
+}

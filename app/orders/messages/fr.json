@@ -1,0 +1,6 @@
+{
+  "title": "Mes commandes",
+  "empty": "Aucune commande pour le moment.",
+  "order-number": "Commande n° {id}",
+  "total": "Total"
+}
