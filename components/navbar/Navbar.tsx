@@ -7,6 +7,7 @@ import CurrencySelector from './components/CurrencySelector'
 import { getTranslations } from 'next-intl/server'
 import LocaleSelector from './components/LocaleSelector'
 import NavbarLinkButton from './components/NavbarLinkButton'
+import VinylBoxButton from './components/VinylBoxButton'
 
 const Navbar = async () => {
   const { userId } = await auth()
@@ -23,6 +24,7 @@ const Navbar = async () => {
               <Link href='/products'>
                 <NavbarLinkButton label={t('products')} />
                 <NavbarLinkButton label={t('faq')} />
+                <VinylBoxButton />
               </Link>
             </div>
           </div>
