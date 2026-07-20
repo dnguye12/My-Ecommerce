@@ -28,7 +28,7 @@ const Navbar = async () => {
               </Link>
             </div>
           </div>
-          <div>
+          <div className='flex items-center'>
             <CartDrawer />
             {userId ? (
               <>

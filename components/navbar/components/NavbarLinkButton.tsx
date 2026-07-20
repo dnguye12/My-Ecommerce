@@ -7,7 +7,7 @@ const NavbarLinkButton = ({ label }: NavbarLinkButtonProps) => {
   return (
     <Button
       variant={'ghost'}
-      className='px-4 py-3 text-sm text-white font-bold uppercase cursor-pointer hover:bg-black hover:text-white!'
+      className='px-3 py-4 text-sm text-white font-bold uppercase cursor-pointer h-12 hover:bg-black hover:text-white!'
     >
       {label}
     </Button>
