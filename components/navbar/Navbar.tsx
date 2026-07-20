@@ -6,21 +6,25 @@ import CartDrawer from './components/CartDrawer'
 import CurrencySelector from './components/CurrencySelector'
 import { getTranslations } from 'next-intl/server'
 import LocaleSelector from './components/LocaleSelector'
+import NavbarLinkButton from './components/NavbarLinkButton'
 
 const Navbar = async () => {
   const { userId } = await auth()
   const t = await getTranslations('Navbar')
   return (
-    <header className='sticky top-0 bg-background z-50'>
+    <header className='sticky top-0 bg-black z-50'>
       <div className='container mx-auto flex items-center justify-between'>
         <nav className='flex items-center gap-4 justify-between w-full'>
-          <div>
-            <Link href='/' className='text-xl font-bold'>
+          <div className='flex items-center'>
+            <Link href='/' className='text-xl font-bold text-white'>
               MyShop
             </Link>
-            <Link href='/products'>
-              <Button variant='ghost'>{t('products')}</Button>
-            </Link>
+            <div className='pl-5 pr-3'>
+              <Link href='/products'>
+                <NavbarLinkButton label={t('products')} />
+                <NavbarLinkButton label={t('faq')} />
+              </Link>
+            </div>
           </div>
           <div>
             <CartDrawer />
