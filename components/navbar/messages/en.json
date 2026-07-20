@@ -1,5 +1,11 @@
 {
   "products": "Products",
   "orders": "Orders",
-  "sign-in": "Sign In"
+  "sign-in": "Sign In",
+  "drawer": {
+    "title": "Shopping Cart",
+    "total": "Total",
+    "checkout": "Checkout",
+    "qty": "Qty"
+  }
 }

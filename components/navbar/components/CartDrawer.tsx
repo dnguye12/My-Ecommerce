@@ -23,7 +23,7 @@ import { useTranslations } from 'next-intl'
 const CartDrawer = () => {
   const [open, setOpen] = useState(false)
   const router = useRouter()
-  const t = useTranslations('CartDrawer')
+  const t = useTranslations('Navbar')
 
   const items = useCartStore((store) => store.items)
   const total = useCartStore((state) => state.total)
@@ -44,7 +44,7 @@ const CartDrawer = () => {
       </DrawerTrigger>
       <DrawerContent className=' max-w-2xl'>
         <DrawerHeader>
-          <DrawerTitle className='text-2xl font-semibold'>{t('title')}</DrawerTitle>
+          <DrawerTitle className='text-2xl font-semibold'>{t('drawer.title')}</DrawerTitle>
         </DrawerHeader>
         <Separator />
         <div className='flex-1 flex flex-col gap-4 p-4'>
@@ -55,11 +55,11 @@ const CartDrawer = () => {
         <Separator />
         <DrawerFooter>
           <div className='flex justify-between text-lg font-semibold'>
-            <span>{t('total')}</span>
+            <span>{t('drawer.total')}</span>
             <span>{formatMoney(total().toString(), currency, exchangeRate)}</span>
           </div>
           <Button size={'lg'} onClick={handleCheckOut}>
-            {t('checkout')}
+            {t('drawer.checkout')}
           </Button>
         </DrawerFooter>
       </DrawerContent>

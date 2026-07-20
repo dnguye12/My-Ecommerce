@@ -1,5 +1,11 @@
 {
   "products": "Produits",
   "orders": "Commandes",
-  "sign-in": "Se connecter"
+  "sign-in": "Se connecter",
+  "drawer": {
+    "title": "Panier",
+    "total": "Total",
+    "checkout": "Commander",
+    "qty": "Qté"
+  }
 }
