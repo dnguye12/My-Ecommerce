@@ -10,15 +10,14 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { getCurrencySymbol, SUPPORTED_CURRENCIES } from '@/lib/currency'
 import { useStoreCurrency } from '@/providers/store-currency-provider'
+import NavbarLinkButton from './NavbarLinkButton'
 
 const CurrencySelector = () => {
   const { currency, onChangeCurrency } = useStoreCurrency()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size={'icon-lg'} variant='ghost'>
-          {getCurrencySymbol(currency)}
-        </Button>
+        <NavbarLinkButton label={getCurrencySymbol(currency)} iconButton />
       </DropdownMenuTrigger>
       <DropdownMenuContent align='center' className='min-w-20'>
         <DropdownMenuGroup>

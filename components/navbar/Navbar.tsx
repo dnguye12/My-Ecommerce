@@ -15,8 +15,8 @@ const Navbar = async () => {
   return (
     <header className='sticky top-0 bg-black z-50'>
       <div className='container mx-auto flex items-center justify-between'>
-        <nav className='flex items-center gap-4 justify-between w-full'>
-          <div className='flex items-center'>
+        <nav className='flex items-center justify-between w-full'>
+          <div className='flex items-center gap-4 '>
             <Link href='/' className='text-xl font-bold text-white'>
               MyShop
             </Link>
@@ -28,15 +28,10 @@ const Navbar = async () => {
               </Link>
             </div>
           </div>
-          <div className='flex items-center'>
+          <div className='flex items-center gap-1.5'>
             <CartDrawer />
             {userId ? (
-              <>
-                <Link href='/orders'>
-                  <Button variant='ghost'>{t('orders')}</Button>
-                </Link>
-                <UserButton />
-              </>
+              <UserButton />
             ) : (
               <>
                 <Link href='/sign-in'>

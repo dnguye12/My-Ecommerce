@@ -37,8 +37,12 @@ const CartDrawer = () => {
   return (
     <Drawer direction='right' open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant='ghost' size='icon' className='relative'>
-          <ShoppingCartIcon />
+        <Button
+          variant='ghost'
+          size='icon-lg'
+          className='relative text-white font-bold uppercase cursor-pointer hover:bg-black aria-expanded:bg-black hover:text-white! aria-expanded:text-white'
+        >
+          <ShoppingCartIcon strokeWidth={3} />
           <CartCounterBadge />
         </Button>
       </DrawerTrigger>

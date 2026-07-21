@@ -12,6 +12,7 @@ import { LOCALE_COOKIE_KEY, routing } from '@/lib/i18n/routing'
 import { useLocale } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import NavbarLinkButton from './NavbarLinkButton'
 
 type Locale = (typeof routing.locales)[number]
 
@@ -34,9 +35,7 @@ const LocaleSelector = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size={'icon-lg'} variant='ghost'>
-          {locale.toUpperCase()}
-        </Button>
+        <NavbarLinkButton label={locale.toUpperCase()} iconButton />
       </DropdownMenuTrigger>
       <DropdownMenuContent align='center' className='min-w-20'>
         <DropdownMenuGroup>
