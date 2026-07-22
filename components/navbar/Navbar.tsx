@@ -8,6 +8,7 @@ import { getTranslations } from 'next-intl/server'
 import LocaleSelector from './components/LocaleSelector'
 import NavbarLinkButton from './components/NavbarLinkButton'
 import VinylBoxButton from './components/VinylBoxButton'
+import { Separator } from '../ui/separator'
 
 const Navbar = async () => {
   const { userId } = await auth()
@@ -30,17 +31,18 @@ const Navbar = async () => {
           </div>
           <div className='flex items-center gap-1.5'>
             <CartDrawer />
+            <CurrencySelector />
+            <LocaleSelector />
+            <Separator orientation='vertical' className=' h-10 mt-2 mr-2' />
             {userId ? (
               <UserButton />
             ) : (
               <>
                 <Link href='/sign-in'>
-                  <Button>{t('sign-in')}</Button>
+                  <NavbarLinkButton label={t('sign-in')} />
                 </Link>
               </>
             )}
-            <CurrencySelector />
-            <LocaleSelector />
           </div>
         </nav>
       </div>
