@@ -9,8 +9,6 @@ export default getRequestConfig(async () => {
 
   const messages = {
     Navbar: (await import(`../../components/navbar/messages/${locale}.json`)).default,
-    CartDrawer: (await import(`../../components/navbar/components/messages/${locale}.json`))
-      .default,
     ProductCard: (await import(`../../components/product-card/messages/${locale}.json`)).default,
     AddToCartButton: (await import(`../../components/add-to-cart-button/messages/${locale}.json`))
       .default,

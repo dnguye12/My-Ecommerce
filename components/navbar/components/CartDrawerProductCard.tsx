@@ -12,7 +12,7 @@ interface CartDrawerProductCardProps {
 
 const CartDrawerProductCard = ({ item }: CartDrawerProductCardProps) => {
   const { currency, exchangeRate } = useStoreCurrency()
-  const t = useTranslations('CartDrawer')
+  const t = useTranslations('Navbar')
 
   return (
     <div className='flex items-center gap-4 rounded-lg border p-4'>
@@ -22,7 +22,7 @@ const CartDrawerProductCard = ({ item }: CartDrawerProductCardProps) => {
       <div className='flex-1'>
         <h3 className='font-medium'>{item.name}</h3>
         <p className='text-sm text-muted-foreground'>
-          {t('qty')}: {item.quantity}
+          {t('drawer.qty')}: {item.quantity}
         </p>
       </div>
       <div className='text-right'>
